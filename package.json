@@ -1,0 +1,57 @@
+{
+  "name": "language-alta",
+  "displayName": "Alta Language Package",
+  "description": "A VS Code language support package for Alta",
+  "version": "0.1.0",
+  "publisher": "alta-lang",
+  "author": "Ariel Abreu <facekapow@outlook.com>",
+  "engines": {
+    "vscode": "^1.36.1"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "alta",
+        "aliases": [
+          "Alta",
+          "alta"
+        ],
+        "extensions": [
+          ".alta"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "alta",
+        "scopeName": "source.alta",
+        "path": "./syntaxes/alta.tmLanguage.json"
+      },
+      {
+        "scopeName": "markdown.alta.codeblock",
+        "path": "./syntaxes/markdown.tmLanguage.json",
+        "injectTo": [
+          "text.html.markdown"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.alta": "alta"
+        },
+        "tokenTypes": {
+          "meta.embedded.block.alta": "other"
+        }
+      }
+    ]
+  },
+  "devDependencies": {
+    "js-yaml": "^3.13.1"
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "npx js-yaml syntaxes/alta.tmLanguage.yaml > syntaxes/alta.tmLanguage.json"
+  },
+  "repository": "https://github.com/alta-lang/language-alta"
+}

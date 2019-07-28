@@ -1,0 +1,45 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "fileTypes": [],
+  "injectionSelector": "L:text.html.markdown",
+  "patterns": [
+    {
+      "include": "#alta-code-block"
+    }
+  ],
+  "repository": {
+    "alta-code-block": {
+      "begin": "(^|\\G)(\\s*)(\\`{3,}|~{3,})\\s*(?i:(alta)(\\s+[^`~]*)?$)",
+      "beginCaptures": {
+        "3": {
+          "name": "punctuation.definition.markdown"
+        },
+        "5": {
+          "name": "fenced_code.block.language"
+        },
+        "6": {
+          "name": "fenced_code.block.language.attributes"
+        }
+      },
+      "end": "(^|\\G)(\\2|\\s{0,3})(\\3)\\s*$",
+      "endCaptures": {
+        "3": {
+          "name": "punctuation.definition.markdown"
+        }
+      },
+      "patterns": [
+        {
+          "begin": "(^|\\G)(\\s*)(.*)",
+          "while": "(^|\\G)(?!\\s*([`~]{3,})\\s*$)",
+          "contentName": "meta.embedded.block.alta",
+          "patterns": [
+            {
+              "include": "source.alta"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "scopeName": "markdown.alta.codeblock"
+}

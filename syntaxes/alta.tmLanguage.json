@@ -1,0 +1,2300 @@
+{
+  "name": "Alta",
+  "patterns": [
+    {
+      "name": "meta.preprocessor.alta",
+      "begin": "(##)",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.preprocessor.alta"
+        }
+      },
+      "end": "$",
+      "patterns": [
+        {
+          "include": "#preprocessor"
+        }
+      ]
+    },
+    {
+      "include": "#comments"
+    },
+    {
+      "name": "meta.general-attribute.alta",
+      "begin": "(@@)([_A-Za-z][_A-Za-z0-9\\.]*)\\s*(\\()?",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.general-attribute.alta"
+        },
+        "2": {
+          "name": "entity.other.attribute-name.alta"
+        },
+        "3": {
+          "name": "keyword.attribute.argument-start.alta"
+        }
+      },
+      "end": "(\\))",
+      "endCaptures": {
+        "1": {
+          "name": "keyword.attribute.argument-end.alta"
+        }
+      },
+      "patterns": [
+        {
+          "include": "$self"
+        }
+      ]
+    },
+    {
+      "name": "meta.export.alta",
+      "begin": "\\b(export)\\b\\s*",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.control.modular.alta"
+        }
+      },
+      "end": "\\b",
+      "patterns": [
+        {
+          "include": "$self"
+        }
+      ]
+    },
+    {
+      "include": "#classes"
+    },
+    {
+      "include": "#structs"
+    },
+    {
+      "include": "#interfaces"
+    },
+    {
+      "include": "#enums"
+    },
+    {
+      "include": "#functions"
+    },
+    {
+      "include": "#variables"
+    },
+    {
+      "include": "#typealias"
+    },
+    {
+      "include": "#imports"
+    },
+    {
+      "include": "#staticConditional"
+    },
+    {
+      "include": "#ifs"
+    },
+    {
+      "include": "#trys"
+    },
+    {
+      "include": "#fors"
+    },
+    {
+      "include": "#whiles"
+    },
+    {
+      "include": "#expressions"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#vars"
+    },
+    {
+      "include": "#punctuation"
+    }
+  ],
+  "repository": {
+    "vars": {
+      "patterns": [
+        {
+          "name": "variable.language.this.alta",
+          "match": "\\b(this)\\b"
+        },
+        {
+          "name": "meta.variable-fetch.alta",
+          "match": "([A-Za-z_][A-Za-z_0-9]*)",
+          "captures": {
+            "1": {
+              "name": "variable.other.alta"
+            }
+          }
+        }
+      ]
+    },
+    "enums": {
+      "patterns": [
+        {
+          "name": "meta.enum-declaration.alta",
+          "begin": "\\b(enum)\\b\\s*([A-Za-z_][A-Za-z_0-9]*)\\s*({)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.enum.alta"
+            },
+            "2": {
+              "name": "entity.name.enum.alta"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "end": "(})",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comments"
+            },
+            {
+              "name": "entity.name.type.enum.alta",
+              "match": "[A-Za-z_][A-Za-z_0-9]*"
+            },
+            {
+              "name": "constant.numeric.enum.alta",
+              "match": "[0-9]+"
+            },
+            {
+              "include": "#punctuation"
+            }
+          ]
+        }
+      ]
+    },
+    "structs": {
+      "patterns": [
+        {
+          "name": "meta.struct-declaration.alta",
+          "begin": "((?:(?:@)(?:[_A-Za-z][_A-Za-z0-9\\.]*)\\s*(?:\\(.*\\))?\\s*)*)(?:\\b(literal))?\\s*((?:(?:@)(?:[_A-Za-z][_A-Za-z0-9\\.]*)\\s*(?:\\(.*\\))?\\s*)*)\\s*\\b(struct)\\b\\s*([A-Za-z_][A-Za-z_0-9]*)\\s*({)",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#attributes"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.literal.alta"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#attributes"
+                }
+              ]
+            },
+            "4": {
+              "name": "keyword.struct.alta"
+            },
+            "5": {
+              "name": "entity.name.struct.alta"
+            },
+            "6": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "end": "(})",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "name": "meta.struct-member-definition.alta",
+              "match": "([A-Za-z_][A-Za-z_0-9]*)\\s*(?:(:)\\s*((?:\\((?:(?:(?:[_A-Za-z][_A-Za-z0-9]*\\s*:\\s*)?(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*\\s*,?\\s*)*)\\)\\s*(?:->|=>)\\s*)?(?:(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*)))",
+              "captures": {
+                "1": {
+                  "name": "variable.other.alta"
+                },
+                "2": {
+                  "patterns": [
+                    {
+                      "include": "#punctuation"
+                    }
+                  ]
+                },
+                "3": {
+                  "patterns": [
+                    {
+                      "include": "#type"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "include": "#punctuation"
+            }
+          ]
+        }
+      ]
+    },
+    "trys": {
+      "patterns": [
+        {
+          "begin": "\\b(try)\\b\\s*({)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.try.alta"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "end": "(})",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "include": "$self"
+            }
+          ]
+        },
+        {
+          "begin": "\\b(catch)\\b\\s*\\b(all)\\b\\s*({)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.catch.alta"
+            },
+            "2": {
+              "name": "keyword.all.alta"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "end": "(})",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "include": "$self"
+            }
+          ]
+        },
+        {
+          "begin": "\\b(catch)\\b\\s*(?:([A-Za-z_][A-Za-z_0-9]*)\\s*(:)\\s*((?:\\((?:(?:(?:[_A-Za-z][_A-Za-z0-9]*\\s*:\\s*)?(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*\\s*,?\\s*)*)\\)\\s*(?:->|=>)\\s*)?(?:(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*)))\\s*({)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.catch.alta"
+            },
+            "2": {
+              "name": "variable.other.error.alta"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#type"
+                }
+              ]
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "end": "(})",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "include": "$self"
+            }
+          ]
+        }
+      ]
+    },
+    "statement": {
+      "patterns": [
+        {
+          "name": "meta.statement.alta",
+          "begin": "^",
+          "end": ";|$",
+          "patterns": [
+            {
+              "include": "$self"
+            }
+          ]
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.number-sign",
+          "match": "\\#[^\\n]*"
+        }
+      ]
+    },
+    "preprocessor": {
+      "patterns": [
+        {
+          "name": "keyword.control.preprocessor.alta",
+          "match": "\\b(if|else|define|undefine|error|end)\\b"
+        },
+        {
+          "name": "keyword.preprocessor.alta",
+          "match": "(\\b(defined|not|is|(?:isn(?:t)?t)|and|or\\b)|(==|!=|!|&&|\\|\\|))"
+        },
+        {
+          "name": "constant.language.null.preprocessor.alta",
+          "match": "\\b(null)\\b"
+        },
+        {
+          "name": "string.quoted.double.preprocessor.alta",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.preprocessor.alta",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "variable.other.preprocessor.alta",
+          "match": "[A-Za-z_][A-Za-z_0-9]*"
+        },
+        {
+          "include": "#punctuation"
+        }
+      ]
+    },
+    "ifs": {
+      "patterns": [
+        {
+          "name": "meta.if.alta",
+          "begin": "\\b(if)\\b\\s*(.+)({)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.alta"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#expressions"
+                },
+                {
+                  "include": "#vars"
+                }
+              ]
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "end": "(})",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "include": "$self"
+            }
+          ]
+        },
+        {
+          "name": "keyword.control.alta",
+          "match": "\\belse\\b"
+        }
+      ]
+    },
+    "fors": {
+      "patterns": [
+        {
+          "name": "meta.for-loop.alta",
+          "begin": "\\b(for)\\b\\s*(\\(.+\\))\\s*({)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.alta"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "$self"
+                },
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "end": "(})",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "include": "$self"
+            }
+          ]
+        },
+        {
+          "name": "meta.ranged-for-loop.alta",
+          "begin": "\\b(for)\\b\\s*([A-Za-z_][A-Za-z_0-9]*)\\s*(:)\\s*((?:\\((?:(?:(?:[_A-Za-z][_A-Za-z0-9]*\\s*:\\s*)?(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*\\s*,?\\s*)*)\\)\\s*(?:->|=>)\\s*)?(?:(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*))\\s*\\b(in)\\b\\s*((?:(?!\\.\\.).)+)(\\.\\.(?:\\.)?)((?:(?!\\bshrink\\b).)+)(\\bshrink\\b)?\\s*({)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.control.alta"
+            },
+            "2": {
+              "name": "variable.other.counter.alta"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#type"
+                }
+              ]
+            },
+            "5": {
+              "name": "keyword.alta"
+            },
+            "6": {
+              "patterns": [
+                {
+                  "include": "#expressions"
+                },
+                {
+                  "include": "#vars"
+                }
+              ]
+            },
+            "7": {
+              "name": "keyword.range.alta"
+            },
+            "8": {
+              "patterns": [
+                {
+                  "include": "#expressions"
+                },
+                {
+                  "include": "#vars"
+                }
+              ]
+            },
+            "9": {
+              "name": "keyword.alta"
+            },
+            "10": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "end": "(})",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "include": "$self"
+            }
+          ]
+        }
+      ]
+    },
+    "whiles": {
+      "patterns": [
+        {
+          "begin": "\\b(while)\\b\\s*(.+)\\s*({)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.while.alta"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#expressions"
+                },
+                {
+                  "include": "#vars"
+                }
+              ]
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "end": "(})",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "include": "$self"
+            }
+          ]
+        }
+      ]
+    },
+    "classStatements": {
+      "patterns": [
+        {
+          "include": "#staticConditional"
+        },
+        {
+          "include": "#variables"
+        },
+        {
+          "include": "#functions"
+        },
+        {
+          "name": "meta.constructor.alta",
+          "begin": "((?:(?:@)(?:[_A-Za-z][_A-Za-z0-9\\.]*)\\s*(?:\\(.*\\))?\\s*)*)\\b(constructor)\\b\\s*(\\(.*\\))\\s*({)",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#attributes"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.name.constructor.alta"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#parameters"
+                },
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "end": "(})",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "include": "$self"
+            }
+          ]
+        },
+        {
+          "name": "meta.constructor-def.alta",
+          "match": "((?:(?:@)(?:[_A-Za-z][_A-Za-z0-9\\.]*)\\s*(?:\\(.*\\))?\\s*)*)\\b(constructor)\\b\\s*(\\(.*\\))",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#attributes"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.name.constructor.alta"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#parameters"
+                },
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "meta.destructor.alta",
+          "begin": "\\b(destructor)\\b\\s*(\\(\\s*\\))\\s*({)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.destructor.alta"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "end": "(})",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "include": "$self"
+            }
+          ]
+        },
+        {
+          "name": "meta.destructor-def.alta",
+          "match": "\\b(destructor)\\b\\s*(\\(\\s*\\))",
+          "captures": {
+            "1": {
+              "name": "keyword.destructor.alta"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "include": "#castHandler"
+        }
+      ]
+    },
+    "castHandler": {
+      "patterns": []
+    },
+    "staticConditional": {
+      "patterns": []
+    },
+    "interfaces": {
+      "patterns": []
+    },
+    "classes": {
+      "repository": {
+        "definition": {
+          "patterns": [
+            {
+              "name": "meta.class-definition.alta",
+              "match": "((?:\\b(?:generic)\\b\\s*)+)?\\b(class)\\b\\s*([A-Za-z_][A-Za-z_0-9]*)\\s*(<.+>)?\\s*(?:\\b(extends)\\b\\s*((?:[A-Za-z_][A-Za-z_0-9]*(?:<.+>)?(?:,\\s*)?)+))?",
+              "captures": {
+                "1": {
+                  "patterns": [
+                    {
+                      "include": "#class-modifiers"
+                    }
+                  ]
+                },
+                "2": {
+                  "name": "storage.type.class.alta"
+                },
+                "3": {
+                  "name": "entity.name.class.alta"
+                },
+                "4": {
+                  "patterns": [
+                    {
+                      "name": "meta.generic.alta",
+                      "match": "([A-Za-z_][A-Za-z_0-9]*)\\s*(?:\\b(implements)\\b\\s*((?:[A-Za-z_][A-Za-z_0-9]*)(?:\\.[A-Za-z_][A-Za-z_0-9]*)*))?",
+                      "captures": {
+                        "1": {
+                          "name": "entity.name.class.generic.alta"
+                        },
+                        "2": {
+                          "name": "keyword.implements.alta"
+                        },
+                        "3": {
+                          "patterns": [
+                            {
+                              "match": "([A-Za-z_][A-Za-z_0-9]*)(\\.)",
+                              "captures": {
+                                "1": {
+                                  "name": "variable.other.object.alta"
+                                },
+                                "2": {
+                                  "patterns": [
+                                    {
+                                      "include": "#punctuation"
+                                    }
+                                  ]
+                                }
+                              }
+                            },
+                            {
+                              "match": "[A-Za-z_][A-Za-z_0-9]*",
+                              "name": "entity.name.interface.alta"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "include": "#punctuation"
+                    }
+                  ]
+                },
+                "5": {
+                  "name": "keyword.other.extends"
+                },
+                "6": {
+                  "patterns": [
+                    {
+                      "name": "entity.other.inherited-class.alta",
+                      "match": "[A-Za-z_][A-Za-z_0-9]*(<.+>)?",
+                      "captures": {
+                        "1": {
+                          "patterns": [
+                            {
+                              "include": "#type"
+                            },
+                            {
+                              "include": "#punctuation"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "#include": "#punctuation"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "patterns": [
+        {
+          "name": "meta.class-declaration.alta",
+          "begin": "((?:(?:\\b(?:generic)\\b\\s*)+)?\\b(?:class)\\b\\s*(?:[A-Za-z_][A-Za-z_0-9]*)\\s*(?:<.+>)?\\s*(?:\\b(extends)\\b\\s*([A-Za-z_][A-Za-z_0-9]*(?:<.+>)?(?:,\\s*)?)+)?)\\s*({)",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#definition"
+                }
+              ]
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "end": "(})",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comments"
+            },
+            {
+              "name": "meta.visibility-modifier.alta",
+              "match": "((?:(?:@)(?:[_A-Za-z][_A-Za-z0-9\\.]*)\\s*(?:\\(.*\\))?\\s*)*)\\s*\\b(public|private)\\b",
+              "captures": {
+                "1": {
+                  "patterns": [
+                    {
+                      "include": "#attributes"
+                    }
+                  ]
+                },
+                "2": {
+                  "name": "storage.modifier.access.alta"
+                }
+              }
+            },
+            {
+              "include": "#classStatements"
+            }
+          ]
+        }
+      ]
+    },
+    "parameters": {
+      "patterns": [
+        {
+          "name": "meta.parameter.alta",
+          "match": "((?:(?:@)(?:[_A-Za-z][_A-Za-z0-9\\.]*)\\s*(?:\\(.*\\))?\\s*)*)([A-Za-z_][A-Za-z_0-9]*)\\s*(:)\\s*((?:\\((?:(?:(?:[_A-Za-z][_A-Za-z0-9]*\\s*:\\s*)?(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*\\s*,?\\s*)*)\\)\\s*(?:->|=>)\\s*)?(?:(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*))",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#attributes"
+                }
+              ]
+            },
+            "2": {
+              "name": "variable.parameter.alta"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#type"
+                },
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "functions": {
+      "repository": {
+        "definition": {
+          "patterns": [
+            {
+              "name": "meta.function-definition.alta",
+              "begin": "((?:(?:@)(?:[_A-Za-z][_A-Za-z0-9\\.]*)\\s*(?:\\(.*\\))?\\s*)*)((?:\\b(?:entry|literal|global|external|generic)\\b\\s*)+)?\\s*((?:(?:@)(?:[_A-Za-z][_A-Za-z0-9\\.]*)\\s*(?:\\(.*\\))?\\s*)*)\\b(function)\\b\\s*([A-Za-z_][A-Za-z_0-9]*)\\b\\s*(<.+>)?\\s*(\\(.*\\))\\s*(:)\\s*((?:\\((?:(?:(?:[_A-Za-z][_A-Za-z0-9]*\\s*:\\s*)?(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*\\s*,?\\s*)*)\\)\\s*(?:->|=>)\\s*)?(?:(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*))",
+              "beginCaptures": {
+                "1": {
+                  "patterns": [
+                    {
+                      "include": "#attributes"
+                    }
+                  ]
+                },
+                "2": {
+                  "patterns": [
+                    {
+                      "include": "#function-modifiers"
+                    }
+                  ]
+                },
+                "3": {
+                  "patterns": [
+                    {
+                      "include": "#attributes"
+                    }
+                  ]
+                },
+                "4": {
+                  "name": "storage.type.function.alta"
+                },
+                "5": {
+                  "name": "entity.name.function.alta"
+                },
+                "6": {
+                  "patterns": [
+                    {
+                      "name": "meta.generic.alta",
+                      "match": "([A-Za-z_][A-Za-z_0-9]*)\\s*(?:\\b(implements)\\b\\s*((?:[A-Za-z_][A-Za-z_0-9]*)(?:\\.[A-Za-z_][A-Za-z_0-9]*)*))?",
+                      "captures": {
+                        "1": {
+                          "name": "entity.name.class.generic.alta"
+                        },
+                        "2": {
+                          "name": "keyword.implements.alta"
+                        },
+                        "3": {
+                          "patterns": [
+                            {
+                              "match": "([A-Za-z_][A-Za-z_0-9]*)(\\.)",
+                              "captures": {
+                                "1": {
+                                  "name": "variable.other.object.alta"
+                                },
+                                "2": {
+                                  "patterns": [
+                                    {
+                                      "include": "#punctuation"
+                                    }
+                                  ]
+                                }
+                              }
+                            },
+                            {
+                              "match": "[A-Za-z_][A-Za-z_0-9]*",
+                              "name": "entity.name.interface.alta"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "include": "#punctuation"
+                    }
+                  ]
+                },
+                "7": {
+                  "patterns": [
+                    {
+                      "include": "#parameters"
+                    },
+                    {
+                      "include": "#punctuation"
+                    }
+                  ]
+                },
+                "8": {
+                  "patterns": [
+                    {
+                      "include": "#punctuation"
+                    }
+                  ]
+                },
+                "9": {
+                  "patterns": [
+                    {
+                      "include": "#type"
+                    }
+                  ]
+                }
+              },
+              "end": "\\b"
+            }
+          ]
+        }
+      },
+      "patterns": [
+        {
+          "name": "meta.function-declaration.alta",
+          "begin": "((?:(?:(?:@)(?:[_A-Za-z][_A-Za-z0-9\\.]*)\\s*(?:\\(.*\\))?\\s*)*)(?:(?:\\b(?:entry|literal|global|external|generic)\\b\\s*)+)?\\s*(?:(?:(?:@)(?:[_A-Za-z][_A-Za-z0-9\\.]*)\\s*(?:\\(.*\\))?\\s*)*)\\b(?:function)\\b\\s*(?:[A-Za-z_][A-Za-z_0-9]*)\\b\\s*(?:<.+>)?\\s*(?:\\(.*\\))\\s*(?:\\:)\\s*(?:(?:(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)+)?\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?))\\s*({)",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#definition"
+                }
+              ]
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "end": "(})",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "include": "$self"
+            }
+          ]
+        },
+        {
+          "include": "#definition"
+        }
+      ]
+    },
+    "variables": {
+      "repository": {
+        "definition": {
+          "patterns": [
+            {
+              "name": "meta.variable-definition.alta",
+              "match": "((?:\\b(?:literal|global|external)\\b\\s*)+)?\\b(let|var)\\b\\s*([A-Za-z_][A-Za-z_0-9]*)\\s*(?:(:)\\s*((?:\\((?:(?:(?:[_A-Za-z][_A-Za-z0-9]*\\s*:\\s*)?(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*\\s*,?\\s*)*)\\)\\s*(?:->|=>)\\s*)?(?:(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*)))?",
+              "captures": {
+                "1": {
+                  "patterns": [
+                    {
+                      "include": "#variable-modifiers"
+                    }
+                  ]
+                },
+                "2": {
+                  "name": "keyword.variable.alta"
+                },
+                "3": {
+                  "name": "variable.other.alta"
+                },
+                "4": {
+                  "patterns": [
+                    {
+                      "include": "#punctuation"
+                    }
+                  ]
+                },
+                "5": {
+                  "patterns": [
+                    {
+                      "include": "#type"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "patterns": [
+        {
+          "name": "meta.variable-declaration.alta",
+          "begin": "((?:(?:\\b(?:literal|global|external)\\b\\s*)+)?\\b(?:let|var)\\b\\s*(?:[A-Za-z_][A-Za-z_0-9]*)\\s*(?:(?::)\\s*(?:(?:\\((?:(?:(?:[_A-Za-z][_A-Za-z0-9]*\\s*:\\s*)?(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*\\s*,?\\s*)*)\\)\\s*(?:->|=>)\\s*)?(?:(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*)))?)\\s*(=)",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#definition"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.operator.assignment.alta"
+            }
+          },
+          "end": "(;)|$",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "include": "#expressions"
+            }
+          ]
+        },
+        {
+          "include": "#definition"
+        }
+      ]
+    },
+    "type": {
+      "patterns": [
+        {
+          "name": "meta.type.functional.alta",
+          "match": "(?:\\(((?:(?:[_A-Za-z][_A-Za-z0-9]*\\s*:\\s*)?(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*\\s*,?\\s*)*)\\)\\s*(->|=>)\\s*)((?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*)",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "name": "meta.parameter.alta",
+                  "match": "([_A-Za-z][_A-Za-z0-9])\\s*:",
+                  "captures": {
+                    "1": {
+                      "name": "variable.parameter.alta"
+                    }
+                  }
+                },
+                {
+                  "include": "#type"
+                },
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            },
+            "2": {
+              "name": "storage.modifier.returns.alta"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#type"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "meta.type.builtin.alta",
+          "match": "((?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(int|double|float|void|short|long|byte|bool|char|any)\\b\\)*\\s*(\\?)?\\s*\\)*",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#type-modifiers"
+                },
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            },
+            "2": {
+              "name": "storage.type.alta"
+            },
+            "3": {
+              "name": "storage.modifier.optional.alta"
+            }
+          }
+        },
+        {
+          "name": "meta.type.user.alta",
+          "match": "((?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b([A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(<.+>)?\\)*\\s*(\\?)?\\s*\\)*",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#type-modifiers"
+                },
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            },
+            "2": {
+              "patterns": [
+                {
+                  "name": "entity.name.type.alta",
+                  "match": "[A-Za-z_][A-Za-z_0-9]*"
+                },
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#type"
+                },
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            },
+            "4": {
+              "name": "storage.modifier.optional.alta"
+            }
+          }
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.alta",
+          "match": "\\b(return|if|else|for)\\b"
+        },
+        {
+          "name": "keyword.alta",
+          "match": "\\b(new|type|let|var|in|shrink|persistent)\\b"
+        },
+        {
+          "name": "keyword.name.alta",
+          "match": "\\b(constructor)\\b"
+        },
+        {
+          "name": "keyword.referencial.alta",
+          "match": "(?:\\b(getptr)\\b)|(?:\\b(valueof)\\b)|(\\*)|(&)"
+        },
+        {
+          "name": "keyword.control.modular.alta",
+          "match": "\\b(import|export)\\b"
+        },
+        {
+          "name": "keyword.alta",
+          "match": "\\b(as|sizeof)\\b"
+        },
+        {
+          "name": "keyword.operator.alta",
+          "match": "(==|!=|!|&&|\\|\\||>=|<=|>|<)"
+        },
+        {
+          "name": "keyword.break.alta",
+          "match": "\\b(break)\\b"
+        },
+        {
+          "name": "keyword.continue.alta",
+          "match": "\\b(continue)\\b"
+        },
+        {
+          "name": "keyword.throw.alta",
+          "match": "\\b(throw)\\b"
+        },
+        {
+          "name": "meta.delete.alta",
+          "match": "\\b(delete)\\b\\s*(persistent)\\b",
+          "captures": {
+            "1": {
+              "name": "keyword.delete.alta"
+            },
+            "2": {
+              "name": "keyword.persistent.alta"
+            }
+          }
+        },
+        {
+          "name": "storage.type.alta",
+          "match": "\\b(function|class)\\b"
+        },
+        {
+          "include": "#function-modifiers"
+        },
+        {
+          "include": "#variable-modifiers"
+        },
+        {
+          "include": "#type-modifiers"
+        },
+        {
+          "include": "#access-modifiers"
+        }
+      ]
+    },
+    "function-modifiers": {
+      "patterns": [
+        {
+          "name": "storage.modifier.function.alta",
+          "match": "\\b(entry|literal|global|external|generic)\\b"
+        }
+      ]
+    },
+    "variable-modifiers": {
+      "patterns": [
+        {
+          "name": "storage.modifier.variable.alta",
+          "match": "\\b(literal|global|external)\\b"
+        }
+      ]
+    },
+    "type-modifiers": {
+      "patterns": [
+        {
+          "name": "storage.modifier.type.alta",
+          "match": "\\b(const|ref|long|short|ptr|unsigned|signed)\\b"
+        }
+      ]
+    },
+    "class-modifiers": {
+      "patterns": [
+        {
+          "name": "storage.modifier.class.alta",
+          "match": "\\b(generic)\\b"
+        }
+      ]
+    },
+    "access-modifiers": {
+      "patterns": [
+        {
+          "name": "storage.modifier.access.alta",
+          "match": "\\b(public|private)\\b"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.alta",
+          "begin": "(\")",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.quote.alta"
+            }
+          },
+          "end": "(\")",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.quote.alta"
+            }
+          },
+          "patterns": [
+            {
+              "name": "constant.definition.alta",
+              "match": "(?<!(?<!\\\\)\\\\)@\\[([A-Za-z_][A-Za-z_0-9]*)]"
+            },
+            {
+              "name": "constant.other.placeholder.alta",
+              "match": "(?<!(?<!\\\\)\\\\)(\\\\%(?:-|\\+| |#|0)?(?:[0-9]+|\\*)?(?:(?:\\.[0-9]+)|(?:\\.\\*))?(?:hh|h|ll|l|j|z|t|L)?(?:d|i|u|o|x|X|f|F|e|E|g|G|a|A|c|s|p|n|(?:\\\\%)))"
+            },
+            {
+              "name": "constant.character.escape.alta",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.alta",
+          "begin": "(\\')",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.single-quote.alta"
+            }
+          },
+          "end": "(\\')",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.single-quote.alta"
+            }
+          },
+          "patterns": [
+            {
+              "name": "constant.definition.alta",
+              "match": "(?<!(?<!\\\\)\\\\)@\\[([A-Za-z_][A-Za-z_0-9]*)]"
+            },
+            {
+              "name": "constant.other.placeholder.alta",
+              "match": "(?<!(?<!\\\\)\\\\)(\\\\%(?:-|\\+| |#|0)?(?:[0-9]+|\\*)?(?:(?:\\.[0-9]+)|(?:\\.\\*))?(?:hh|h|ll|l|j|z|t|L)?(?:d|i|u|o|x|X|f|F|e|E|g|G|a|A|c|s|p|n|(?:\\\\%)))"
+            },
+            {
+              "name": "constant.character.escape.alta",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        {
+          "name": "meta.hex-literal.alta",
+          "match": "(-)?(0x[0-9a-fA-F]+(?:\\.[0-9a-fA-F]+)?)",
+          "captures": {
+            "1": {
+              "name": "keyword.alta"
+            },
+            "2": {
+              "name": "constant.numeric.alta"
+            }
+          }
+        },
+        {
+          "name": "meta.octal-literal.alta",
+          "match": "(-)?(0o[0-7]+(?:\\.[0-7]+)?)",
+          "captures": {
+            "1": {
+              "name": "keyword.alta"
+            },
+            "2": {
+              "name": "constant.numeric.alta"
+            }
+          }
+        },
+        {
+          "name": "meta.binary-literal.alta",
+          "match": "(-)?(0b[0-1]+(?:\\.[0-1]+)?)",
+          "captures": {
+            "1": {
+              "name": "keyword.alta"
+            },
+            "2": {
+              "name": "constant.numeric.alta"
+            }
+          }
+        },
+        {
+          "name": "meta.base-literal.alta",
+          "match": "(-)?([1-9]+b[0-9a-fA-F]+(?:\\.[0-9a-fA-F]+)?)",
+          "captures": {
+            "1": {
+              "name": "keyword.alta"
+            },
+            "2": {
+              "name": "constant.numeric.alta"
+            }
+          }
+        },
+        {
+          "name": "meta.number-literal.alta",
+          "match": "(-)?([0-9]+(?:\\.[0-9]+)?)",
+          "captures": {
+            "1": {
+              "name": "keyword.alta"
+            },
+            "2": {
+              "name": "constant.numeric.alta"
+            }
+          }
+        },
+        {
+          "name": "meta.boolean-literal.alta",
+          "match": "\\b(true|false)\\b",
+          "captures": {
+            "1": {
+              "name": "constant.language.boolean.alta"
+            }
+          }
+        },
+        {
+          "name": "constant.language.nullptr.alta",
+          "match": "\\b(nullptr|null)\\b"
+        }
+      ]
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "name": "punctuation.open-brace.alta",
+          "match": "{"
+        },
+        {
+          "name": "punctuation.close-brace.alta",
+          "match": "}"
+        },
+        {
+          "name": "punctuation.open-parenthesis.alta",
+          "match": "\\("
+        },
+        {
+          "name": "punctuation.close-parenthesis.alta",
+          "match": "\\)"
+        },
+        {
+          "name": "punctuation.open-angle.alta",
+          "match": "<"
+        },
+        {
+          "name": "punctuation.close-angle.alta",
+          "match": ">"
+        },
+        {
+          "name": "punctuation.comma.alta",
+          "match": ","
+        },
+        {
+          "name": "punctuation.quote.alta",
+          "match": "\""
+        },
+        {
+          "name": "punctuation.colon.alta",
+          "match": ":"
+        },
+        {
+          "name": "punctuation.semicolon.alta",
+          "match": ";"
+        },
+        {
+          "name": "punctuation.dot.alta",
+          "match": "\\."
+        },
+        {
+          "name": "punctuation.equals.alta",
+          "match": "="
+        },
+        {
+          "name": "punctuation.addition.alta",
+          "match": "\\+"
+        },
+        {
+          "name": "punctuation.subtraction.alta",
+          "match": "-"
+        },
+        {
+          "name": "punctuation.multiplication.alta",
+          "match": "\\*"
+        },
+        {
+          "name": "punctuation.division.alta",
+          "match": "/"
+        },
+        {
+          "name": "punctuation.exclamation.alta",
+          "match": "!"
+        },
+        {
+          "name": "punctuation.at.alta",
+          "match": "\\@"
+        }
+      ]
+    },
+    "expressions": {
+      "patterns": [
+        {
+          "name": "keyword.operator.alta",
+          "match": "(==|!=|!|&&|\\|\\||>=|<=|>|<)"
+        },
+        {
+          "name": "meta.lambda.alta",
+          "begin": "((?:(?:@)(?:[_A-Za-z][_A-Za-z0-9\\.]*)\\s*(?:\\(.*\\))?\\s*)*)(\\((?:(?:[_A-Za-z][_A-Za-z0-9]*\\s*:\\s*)((?:\\((?:(?:(?:[_A-Za-z][_A-Za-z0-9]*\\s*:\\s*)?(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*\\s*,?\\s*)*)\\)\\s*(?:->|=>)\\s*)?(?:(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*))\\s*,?\\s*)*\\))\\s*(=>)\\s*((?:\\((?:(?:(?:[_A-Za-z][_A-Za-z0-9]*\\s*:\\s*)?(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*\\s*,?\\s*)*)\\)\\s*(?:->|=>)\\s*)?(?:(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*))\\s*({)",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#attributes"
+                }
+              ]
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#parameters"
+                },
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            },
+            "4": {
+              "name": "keyword.returns.alta"
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#type"
+                }
+              ]
+            },
+            "6": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "end": "(})",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "include": "$self"
+            }
+          ]
+        },
+        {
+          "name": "meta.as.alta",
+          "match": "\\b(as)\\b\\s*((?:\\((?:(?:(?:[_A-Za-z][_A-Za-z0-9]*\\s*:\\s*)?(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*\\s*,?\\s*)*)\\)\\s*(?:->|=>)\\s*)?(?:(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*))",
+          "captures": {
+            "1": {
+              "name": "keyword.alta"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#type"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "meta.sizeof.alta",
+          "match": "\\b(sizeof)\\b\\s*((?:\\((?:(?:(?:[_A-Za-z][_A-Za-z0-9]*\\s*:\\s*)?(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*\\s*,?\\s*)*)\\)\\s*(?:->|=>)\\s*)?(?:(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*))",
+          "captures": {
+            "1": {
+              "name": "keyword.alta"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#type"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "meta.instanceof.alta",
+          "match": "\\b(instanceof)\\b\\s*((?:\\((?:(?:(?:[_A-Za-z][_A-Za-z0-9]*\\s*:\\s*)?(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*\\s*,?\\s*)*)\\)\\s*(?:->|=>)\\s*)?(?:(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*))",
+          "captures": {
+            "1": {
+              "name": "keyword.instanceof.alta"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#type"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "meta.reference.alta",
+          "begin": "(?:\\b(getptr)\\b)|(&)\\s*",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.referencial.alta"
+            },
+            "2": {
+              "name": "keyword.referencial.alta"
+            }
+          },
+          "end": "\\b",
+          "patterns": [
+            {
+              "include": "#expressions"
+            },
+            {
+              "include": "#vars"
+            }
+          ]
+        },
+        {
+          "name": "meta.dereference.alta",
+          "begin": "(?:\\b(valueof)\\b)|(&)\\s*",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.referencial.alta"
+            },
+            "2": {
+              "name": "keyword.referencial.alta"
+            }
+          },
+          "end": "\\b",
+          "patterns": [
+            {
+              "include": "#expressions"
+            },
+            {
+              "include": "#vars"
+            }
+          ]
+        },
+        {
+          "name": "meta.class-instantiation.alta",
+          "begin": "\\b(new)\\b\\s*(?:\\b(persistent|\\*)\\b\\s*)?((?:\\((?:(?:(?:[_A-Za-z][_A-Za-z0-9]*\\s*:\\s*)?(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*\\s*,?\\s*)*)\\)\\s*(?:->|=>)\\s*)?(?:(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*))\\s*(\\()",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.alta"
+            },
+            "2": {
+              "name": "storage.modifier.instantiation.alta"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#type"
+                }
+              ]
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "end": "(\\))",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "include": "#expressions"
+            },
+            {
+              "include": "#vars"
+            }
+          ]
+        },
+        {
+          "name": "meta.class-instantiation-no-args.alta",
+          "match": "\\b(new)\\b\\s*(?:\\b(persistent|\\*)\\b\\s*)?((?:\\((?:(?:(?:[_A-Za-z][_A-Za-z0-9]*\\s*:\\s*)?(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*\\s*,?\\s*)*)\\)\\s*(?:->|=>)\\s*)?(?:(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*))",
+          "captures": {
+            "1": {
+              "name": "keyword.alta"
+            },
+            "2": {
+              "name": "storage.modifier.instantiation.alta"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#type"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "meta.super-call.alta",
+          "begin": "\\b(super)\\b\\s*((?:(?:\\.)(?:[A-Za-z_][A-Za-z_0-9]*))|(?:(?:\\[)(?:[0-9]+)(?:\\]))|)?\\s*(\\()",
+          "beginCaptures": {
+            "1": {
+              "name": "variable.language.super.alta"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "match": "(\\.)([A-Za-z_][A-Za-z_0-9]*)",
+                  "captures": {
+                    "1": {
+                      "patterns": [
+                        {
+                          "include": "#punctuation"
+                        }
+                      ]
+                    },
+                    "2": {
+                      "name": "entity.other.inherited-class.alta"
+                    }
+                  }
+                },
+                {
+                  "match": "(\\[)([0-9]+)(\\])",
+                  "captures": {
+                    "1": {
+                      "patterns": [
+                        {
+                          "include": "#punctuation"
+                        }
+                      ]
+                    },
+                    "2": {
+                      "name": "constant.numeric.alta"
+                    },
+                    "3": {
+                      "patterns": [
+                        {
+                          "include": "#punctuation"
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "end": "(\\))",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "include": "#expressions"
+            },
+            {
+              "include": "#vars"
+            },
+            {
+              "include": "#punctuation"
+            }
+          ]
+        },
+        {
+          "name": "meta.function-call.alta",
+          "begin": "([A-Za-z_][A-Za-z_0-9]*)\\s*((?:\\@)?<.+>\\s*)?(\\()",
+          "beginCaptures": {
+            "1": {
+              "name": "entity.name.function.alta"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#type"
+                },
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "end": "(\\))",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "include": "#expressions"
+            },
+            {
+              "include": "#vars"
+            }
+          ]
+        },
+        {
+          "include": "#constants"
+        },
+        {
+          "include": "#strings"
+        },
+        {
+          "name": "meta.method-call.alta",
+          "begin": "([A-Za-z_][A-Za-z_0-9]*)(\\.)([A-Za-z_][A-Za-z_0-9]*)\\s*((?:\\@)?<.+>\\s*)?(\\()",
+          "beginCaptures": {
+            "1": {
+              "name": "variable.other.object.alta",
+              "patterns": [
+                {
+                  "match": "\\bthis\\b",
+                  "name": "variable.language.this.alta"
+                }
+              ]
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            },
+            "3": {
+              "name": "entity.name.function.method.alta"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#type"
+                },
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            },
+            "5": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "end": "(\\))",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "include": "#expressions"
+            },
+            {
+              "include": "#vars"
+            },
+            {
+              "include": "#punctuation"
+            }
+          ]
+        },
+        {
+          "name": "meta.accessor.alta",
+          "match": "([A-Za-z_][A-Za-z_0-9]*)(\\.)([A-Za-z_][A-Za-z_0-9]*)",
+          "captures": {
+            "1": {
+              "name": "variable.other.object.alta",
+              "patterns": [
+                {
+                  "match": "\\bthis\\b",
+                  "name": "variable.language.this.alta"
+                }
+              ]
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            },
+            "3": {
+              "name": "variable.other.property.alta"
+            }
+          }
+        },
+        {
+          "name": "meta.odd-method-call.alta",
+          "begin": "(\\.)([A-Za-z_][A-Za-z_0-9]*)\\s*((?:\\@)?<.+>\\s*)?(\\()",
+          "beginCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            },
+            "2": {
+              "name": "entity.name.function.method.alta"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                },
+                {
+                  "include": "#type"
+                }
+              ]
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "end": "(\\))",
+          "endCaptures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            }
+          },
+          "patterns": [
+            {
+              "include": "#expressions"
+            },
+            {
+              "include": "#vars"
+            }
+          ]
+        },
+        {
+          "name": "meta.odd-accessor.alta",
+          "match": "(\\.)([A-Za-z_][A-Za-z_0-9]*)(?!\\()",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            },
+            "2": {
+              "name": "variable.other.property.alta"
+            }
+          }
+        },
+        {
+          "name": "constant.definition.alta",
+          "match": "(?<!(?<!\\\\)\\\\)@\\[([A-Za-z_][A-Za-z_0-9]*)]"
+        },
+        {
+          "name": "meta.assignment.alta",
+          "match": "((?:(?:@)(?:[_A-Za-z][_A-Za-z0-9\\.]*)\\s*(?:\\(.*\\))?\\s*)*)\\s*((?<!=)=(?!=))",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#attributes"
+                }
+              ]
+            },
+            "2": {
+              "name": "keyword.operator.assignment.alta"
+            }
+          }
+        },
+        {
+          "include": "#punctuation",
+          "comment": "Easier to just include punctuation instead of repeating +, -, *, /, [, and ]"
+        }
+      ]
+    },
+    "typealias": {
+      "patterns": [
+        {
+          "name": "meta.typealias.alta",
+          "match": "\\b(type)\\b\\s*([A-Za-z_][A-Za-z_0-9]*)\\b\\s*(=)\\s*((?:\\((?:(?:(?:[_A-Za-z][_A-Za-z0-9]*\\s*:\\s*)?(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*\\s*,?\\s*)*)\\)\\s*(?:->|=>)\\s*)?(?:(?:(?:\\(*\\s*(?:\\b(?:const|ref|long|short|ptr|unsigned|signed)\\b\\s*)*\\(*\\s*)*)\\b(?:[A-Za-z_][A-Za-z_0-9]*(?:\\s*\\.\\s*[A-Za-z_][A-Za-z_0-9]*)*)(?:<.+>)?\\)*\\s*(?:\\?)?\\s*\\)*))",
+          "captures": {
+            "1": {
+              "name": "keyword.alta"
+            },
+            "2": {
+              "name": "entity.name.type"
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#type"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "meta.external-type-declaration.alta",
+          "match": "\\b(external)\\b\\s*(type)\\b\\s*([A-Za-z_][A-Za-z_0-9]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.external.alta"
+            },
+            "2": {
+              "name": "keyword.type.alta"
+            },
+            "3": {
+              "name": "entity.name.type.alta"
+            }
+          }
+        }
+      ]
+    },
+    "imports": {
+      "patterns": [
+        {
+          "name": "meta.aliased-import.alta",
+          "match": "\\b(import)\\b\\s*(\\\"(?:\\\\.|[^\\\"])*\\\")\\s*(as)\\b\\s*([A-Za-z_][A-Za-z_0-9]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.modular.alta"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "include": "#strings"
+                }
+              ]
+            },
+            "3": {
+              "name": "keyword.control.alta"
+            },
+            "4": {
+              "name": "support.variable.alta"
+            }
+          }
+        },
+        {
+          "name": "meta.unwrapped-import.alta",
+          "match": "\\b(import)\\b\\s*([A-Za-z_][A-Za-z_0-9]*(?:\\s*,\\s*[A-Za-z_][A-Za-z_0-9]*)*)\\b\\s*(from)\\b\\s*(\\\"(?:\\\\.|[^\\\"])*\\\")",
+          "captures": {
+            "1": {
+              "name": "keyword.control.modular.alta"
+            },
+            "2": {
+              "patterns": [
+                {
+                  "name": "support.variable.alta",
+                  "match": "[A-Za-z_][A-Za-z_0-9]*"
+                },
+                {
+                  "include": "#punctuation"
+                }
+              ]
+            },
+            "3": {
+              "name": "keyword.control.alta"
+            },
+            "4": {
+              "patterns": [
+                {
+                  "include": "#strings"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "attributes": {
+      "patterns": [
+        {
+          "name": "meta.attribute-with-args.alta",
+          "begin": "(@)([_A-Za-z][_A-Za-z0-9\\.]*)\\s*(\\()",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.attribute.alta"
+            },
+            "2": {
+              "name": "entity.other.attribute-name.alta"
+            },
+            "3": {
+              "name": "keyword.attribute.argument-start.alta"
+            }
+          },
+          "end": "(\\))",
+          "endCaptures": {
+            "1": {
+              "name": "keyword.attribute.argument-end.alta"
+            }
+          },
+          "patterns": [
+            {
+              "include": "$self"
+            }
+          ]
+        },
+        {
+          "name": "meta.attribute.alta",
+          "match": "(@)([_A-Za-z][_A-Za-z0-9\\.]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.attribute.alta"
+            },
+            "2": {
+              "name": "entity.other.attribute-name.alta"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "scopeName": "source.alta"
+}
