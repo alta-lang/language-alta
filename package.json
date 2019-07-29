@@ -2,7 +2,7 @@
   "name": "language-alta",
   "displayName": "Alta Language Package",
   "description": "A VS Code language support package for Alta",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "alta-lang",
   "author": "Ariel Abreu <facekapow@outlook.com>",
   "engines": {
